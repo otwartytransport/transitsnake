@@ -11,7 +11,7 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
         pass
 
     def csv_data(self):
-        return dict([(key, str(value)) for key, value in self.__dict__.items() if value])
+        return dict([(key, str(value)) for key, value in self.__dict__.items() if value is not None])
 
 
 def dump(feed, fp):
