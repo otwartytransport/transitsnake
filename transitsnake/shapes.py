@@ -1,5 +1,5 @@
 from . import BaseDatasetType
-from .types import Latitude, Longitude
+from .types import Latitude, Longitude, Point
 
 
 class Shape(BaseDatasetType):
@@ -18,3 +18,10 @@ class Shape(BaseDatasetType):
         self.shape_pt_lon = shape_pt_lon
         self.shape_pt_sequence = shape_pt_sequence
         self.shape_dist_traveled = shape_dist_traveled
+
+    @staticmethod
+    def path(shape_id: str, points: list[Point]):
+        return [
+            Shape(shape_id, point.lat, point.lon, i)
+            for i, point in enumerate(points)
+        ]

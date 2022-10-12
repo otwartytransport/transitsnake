@@ -49,6 +49,12 @@ class Longitude(BaseType):
             raise ValueError('invalid longitude')
 
 
+class Point:
+    def __init__(self, lon: Longitude, lat: Latitude):
+        self.lon = lon
+        self.lat = lat
+
+
 class Timezone(BaseType):
     def validator(self, value):
         if value not in pytz.all_timezones:
