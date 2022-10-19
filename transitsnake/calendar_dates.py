@@ -1,5 +1,7 @@
 import datetime
+from dataclasses import dataclass
 from enum import Enum
+from typing import ClassVar
 
 from . import BaseDatasetType
 
@@ -9,15 +11,10 @@ class ExceptionType(Enum):
     SERVICE_REMOVED = 2
 
 
+@dataclass
 class CalendarDate(BaseDatasetType):
-    filename = 'calendar_dates.txt'
+    filename: ClassVar[str] = 'calendar_dates.txt'
 
-    def __init__(
-            self,
-            service_id: str,
-            date: datetime.date,
-            exception_type: ExceptionType
-    ):
-        self.service_id = service_id
-        self.date = date
-        self.exception_type = exception_type
+    service_id: str
+    date: datetime.date
+    exception_type: ExceptionType

@@ -1,26 +1,26 @@
+from dataclasses import dataclass
+from typing import Optional, ClassVar
+
 from . import BaseDatasetType
-from .types import Timezone, Email, URL
+from .validation import Field, url, email
 
 
+@dataclass
 class Agency(BaseDatasetType):
-    filename = 'agency.txt'
+    filename: ClassVar[str] = 'agency.txt'
 
-    def __init__(
-            self,
-            agency_name: str,
-            agency_url: URL,
-            agency_timezone: Timezone,
-            agency_id: str | None = None,
-            agency_lang: str | None = None,
-            agency_phone: str | None = None,
-            agency_fare_url: URL | None = None,
-            agency_email: Email | None = None
-    ):
-        self.agency_name = agency_name
-        self.agency_url = agency_url
-        self.agency_timezone = agency_timezone
-        self.agency_id = agency_id
-        self.agency_lang = agency_lang
-        self.agency_phone = agency_phone
-        self.agency_fare_url = agency_fare_url
-        self.agency_email = agency_email
+    agency_name: str
+    agency_url: str
+    agency_timezone: str
+    agency_id: Optional[str] = None
+    agency_lang: Optional[str] = None
+    agency_phone: Optional[str] = None
+    agency_fare_url: Optional[str] = None
+    agency_email: Optional[str] = None
+
+    _meta = {
+        'agency_id': Field(global_conditional_required=lambda full, dataset: len(dataset[Agency]) > 1),
+        'agency_url': Field(validators=url),
+        'agency_fare_url': Field(validators=url),
+        'agency_email': Field(validators=email),
+    }

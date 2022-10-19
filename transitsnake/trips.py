@@ -1,4 +1,6 @@
+from dataclasses import dataclass
 from enum import Enum
+from typing import Optional
 
 from . import BaseDatasetType
 
@@ -20,29 +22,17 @@ class BikesAccessible(Enum):
     NO = 2
 
 
+@dataclass
 class Trip(BaseDatasetType):
     filename = 'trips.txt'
 
-    def __init__(
-            self,
-            route_id: str,
-            service_id: str,
-            trip_id: str | None = None,
-            trip_headsign: str | None = None,
-            trip_short_name: str | None = None,
-            direction_id: TripDirection | None = None,
-            block_id: str | None = None,
-            shape_id: str | None = None,
-            wheelchair_accessible: WheelchairAccessible | None = None,
-            bikes_allowed: BikesAccessible | None = None
-    ):
-        self.route_id = route_id
-        self.service_id = service_id
-        self.trip_id = trip_id
-        self.trip_headsign = trip_headsign
-        self.trip_short_name = trip_short_name
-        self.direction_id = direction_id
-        self.block_id = block_id
-        self.shape_id = shape_id
-        self.wheelchair_accessible = wheelchair_accessible
-        self.bikes_allowed = bikes_allowed
+    route_id: str
+    service_id: str
+    trip_id: Optional[str] = None
+    trip_headsign: Optional[str] = None
+    trip_short_name: Optional[str] = None
+    direction_id: Optional[TripDirection] = None
+    block_id: Optional[str] = None
+    shape_id: Optional[str] = None
+    wheelchair_accessible: Optional[WheelchairAccessible] = None
+    bikes_allowed: Optional[BikesAccessible] = None

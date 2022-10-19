@@ -1,6 +1,9 @@
+from dataclasses import dataclass
 from enum import Enum
+from typing import Optional
 
-from . import BaseDatasetType
+from . import BaseDatasetType, Field
+from .validation import non_negative
 
 
 class TransferType(Enum):
@@ -10,25 +13,19 @@ class TransferType(Enum):
     IMPOSSIBLE = 3
 
 
+@dataclass
 class Transfer(BaseDatasetType):
     filename = 'transfers.txt'
 
-    def __init__(
-            self,
-            transfer_type: TransferType,
-            from_stop_id: str | None = None,
-            to_stop_id: str | None = None,
-            from_route_id: str | None = None,
-            to_route_id: str | None = None,
-            from_trip_id: str | None = None,
-            to_trip_id: str | None = None,
-            min_transfer_time: int | None = None
-    ):
-        self.transfer_type = transfer_type
-        self.from_stop_id = from_stop_id
-        self.to_stop_id = to_stop_id
-        self.from_route_id = from_route_id
-        self.to_route_id = to_route_id
-        self.from_trip_id = from_trip_id
-        self.to_trip_id = to_trip_id
-        self.min_transfer_time = min_transfer_time
+    transfer_type: TransferType
+    from_stop_id: Optional[str] = None
+    to_stop_id: Optional[str] = None
+    from_route_id: Optional[str] = None
+    to_route_id: Optional[str] = None
+    from_trip_id: Optional[str] = None
+    to_trip_id: Optional[str] = None
+    min_transfer_time: Optional[int] = None
+
+    _meta = {
+        'min_transfer_time': Field(validators=non_negative)
+    }

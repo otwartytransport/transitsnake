@@ -1,8 +1,11 @@
+from dataclasses import dataclass
 from enum import Enum
+from typing import ClassVar, Optional
 
-from . import BaseDatasetType
+from . import BaseDatasetType, Field
+from .agency import Agency
 from .common import ContinuousPickupDropOff
-from .types import URL, Color
+from .validation import url, non_negative, color
 
 
 class RouteType(Enum):
@@ -18,35 +21,30 @@ class RouteType(Enum):
     MONORAIL = 12
 
 
+@dataclass
 class Route(BaseDatasetType):
-    filename = 'routes.txt'
+    filename: ClassVar[str] = 'routes.txt'
 
-    def __init__(
-            self,
-            route_id: str,
-            route_type: RouteType,
-            agency_id: str | None = None,
-            route_short_name: str | None = None,
-            route_long_name: str | None = None,
-            route_desc: str | None = None,
-            route_url: URL | None = None,
-            route_color: Color | None = None,
-            route_text_color: Color | None = None,
-            route_sort_order: int | None = None,
-            continuous_pickup: ContinuousPickupDropOff | None = None,
-            continuous_drop_off: ContinuousPickupDropOff | None = None,
-            network_id: str | None = None
-    ):
-        self.route_id = route_id
-        self.route_type = route_type
-        self.agency_id = agency_id
-        self.route_short_name = route_short_name
-        self.route_long_name = route_long_name
-        self.route_desc = route_desc
-        self.route_url = route_url
-        self.route_color = route_color
-        self.route_text_color = route_text_color
-        self.route_sort_order = route_sort_order
-        self.continuous_pickup = continuous_pickup
-        self.continuous_drop_off = continuous_drop_off
-        self.network_id = network_id
+    route_id: str
+    route_type: RouteType
+    agency_id: Optional[str] = None
+    route_short_name: Optional[str] = None
+    route_long_name: Optional[str] = None
+    route_desc: Optional[str] = None
+    route_url: Optional[str] = None
+    route_color: Optional[str] = None
+    route_text_color: Optional[str] = None
+    route_sort_order: Optional[int] = None
+    continuous_pickup: Optional[ContinuousPickupDropOff] = None
+    continuous_drop_off: Optional[ContinuousPickupDropOff] = None
+    network_id: Optional[str] = None
+
+    _meta = {
+        'agency_id': Field(global_conditional_required=lambda full, dataset: len(dataset[Agency]) > 1),
+        'route_url': Field(validators=url),
+        'route_color': Field(validators=color),
+        'route_text_color': Field(validators=color),
+        'route_sort_order': Field(validators=non_negative),
+        'route_short_name': Field(conditional_required=lambda full: not full.route_long_name),
+        'route_long_name': Field(conditional_required=lambda full: not full.route_short_name),
+    }

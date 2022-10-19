@@ -1,13 +1,12 @@
+from dataclasses import dataclass
+from typing import ClassVar, Optional
+
 from . import BaseDatasetType
 
 
+@dataclass
 class Area(BaseDatasetType):
-    filename = 'areas.txt'
+    filename: ClassVar[str] = 'areas.txt'
 
-    def __init__(
-            self,
-            area_id: str,
-            area_name: str | None = None
-    ):
-        self.area_id = area_id
-        self.area_name = area_name
+    area_id: str
+    area_name: Optional[str] = None

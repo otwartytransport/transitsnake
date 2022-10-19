@@ -1,27 +1,28 @@
+from typing import ClassVar, Optional, List
+
+from pydantic import BaseModel, NonNegativeInt, NonNegativeFloat
+
 from . import BaseDatasetType
-from .types import Latitude, Longitude, Point
+from .types import Point
 
 
-class Shape(BaseDatasetType):
-    filename = 'shapes.txt'
+class Shape(BaseModel, BaseDatasetType):
+    filename: ClassVar[str] = 'shapes.txt'
 
-    def __init__(
-            self,
-            shape_id: str,
-            shape_pt_lat: Latitude,
-            shape_pt_lon: Longitude,
-            shape_pt_sequence: int,
-            shape_dist_traveled: float | None = None
-    ):
-        self.shape_id = shape_id
-        self.shape_pt_lat = shape_pt_lat
-        self.shape_pt_lon = shape_pt_lon
-        self.shape_pt_sequence = shape_pt_sequence
-        self.shape_dist_traveled = shape_dist_traveled
+    shape_id: str
+    shape_pt_lat: float
+    shape_pt_lon: float
+    shape_pt_sequence: NonNegativeInt
+    shape_dist_traveled: Optional[NonNegativeFloat]
 
     @staticmethod
-    def path(shape_id: str, points: list[Point]):
+    def path(shape_id: str, points: List[Point]):
         return [
-            Shape(shape_id, point.lat, point.lon, i)
+            Shape(
+                shape_id=shape_id,
+                shape_pt_lat=point.lat,
+                shape_pt_lon=point.lon,
+                shape_pt_sequence=i
+            )
             for i, point in enumerate(points)
         ]

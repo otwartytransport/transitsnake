@@ -1,5 +1,9 @@
+from dataclasses import dataclass
 from enum import Enum
-from . import BaseDatasetType
+from typing import ClassVar, Optional
+
+from . import BaseDatasetType, Field
+from .validation import positive, non_negative
 
 
 class PathwayMode(Enum):
@@ -17,33 +21,25 @@ class IsBidirectional(Enum):
     BIDIRECTIONAL = 1
 
 
+@dataclass
 class Pathway(BaseDatasetType):
-    filename = 'pathways.txt'
+    filename: ClassVar[str] = 'pathways.txt'
 
-    def __init__(
-            self,
-            pathway_id: str,
-            from_stop_id: str,
-            to_stop_id: str,
-            pathway_mode: PathwayMode,
-            is_bidirectional: IsBidirectional,
-            length: float | None = None,
-            traversal_time: int | None = None,
-            stair_count: int | None = None,
-            max_slope: float | None = None,
-            min_width: float | None = None,
-            signposted_as: str | None = None,
-            reversed_signposted_as: str | None = None
-    ):
-        self.pathway_id = pathway_id
-        self.from_stop_id = from_stop_id
-        self.to_stop_id = to_stop_id
-        self.pathway_mode = pathway_mode
-        self.is_bidirectional = is_bidirectional
-        self.length = length
-        self.traversal_time = traversal_time
-        self.stair_count = stair_count
-        self.max_slope = max_slope
-        self.min_width = min_width
-        self.signposted_as = signposted_as
-        self.reversed_signposted_as = reversed_signposted_as
+    pathway_id: str
+    from_stop_id: str
+    to_stop_id: str
+    pathway_mode: PathwayMode
+    is_bidirectional: IsBidirectional
+    length: Optional[float] = None
+    traversal_time: Optional[int] = None
+    stair_count: Optional[int] = None
+    max_slope: Optional[float] = None
+    min_width: Optional[float] = None
+    signposted_as: Optional[str] = None
+    reversed_signposted_as: Optional[str] = None
+
+    _meta = {
+        'length': Field(validators=non_negative),
+        'traversal_time': Field(validators=positive),
+        'min_width': Field(validators=positive)
+    }

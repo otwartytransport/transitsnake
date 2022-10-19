@@ -1,8 +1,11 @@
 import datetime
+from dataclasses import dataclass
 from enum import Enum
+from typing import Optional
 
 from . import BaseDatasetType
 from .common import ContinuousPickupDropOff
+from .validation import non_negative, Field
 
 
 class PickupDropOffType(Enum):
@@ -17,33 +20,25 @@ class Timepoint(Enum):
     EXACT = 1
 
 
+@dataclass
 class StopTime(BaseDatasetType):
     filename = 'stop_times.txt'
 
-    def __init__(
-            self,
-            trip_id: str,
-            stop_id: str,
-            stop_sequence: int,
-            arrival_time: datetime.time | None = None,
-            departure_time: datetime.time | None = None,
-            stop_headsign: str | None = None,
-            pickup_type: PickupDropOffType | None = None,
-            drop_off_type: PickupDropOffType | None = None,
-            continuous_pickup: ContinuousPickupDropOff | None = None,
-            continuous_drop_off: ContinuousPickupDropOff | None = None,
-            shape_dist_traveled: float | None = None,
-            timepoint: Timepoint | None = None
-    ):
-        self.trip_id = trip_id
-        self.stop_id = stop_id
-        self.stop_sequence = stop_sequence
-        self.arrival_time = arrival_time
-        self.departure_time = departure_time
-        self.stop_headsign = stop_headsign
-        self.pickup_type = pickup_type
-        self.drop_off_type = drop_off_type
-        self.continuous_pickup = continuous_pickup
-        self.continuous_drop_off = continuous_drop_off
-        self.shape_dist_traveled = shape_dist_traveled
-        self.timepoint = timepoint
+    trip_id: str
+    stop_id: str
+    stop_sequence: int
+    arrival_time: Optional[datetime.time] = None
+    departure_time: Optional[datetime.time] = None
+    stop_headsign: Optional[str] = None
+    pickup_type: Optional[PickupDropOffType] = None
+    drop_off_type: Optional[PickupDropOffType] = None
+    continuous_pickup: Optional[ContinuousPickupDropOff] = None
+    continuous_drop_off: Optional[ContinuousPickupDropOff] = None
+    shape_dist_traveled: Optional[float] = None
+    timepoint: Optional[Timepoint] = None
+
+    _meta = {
+        'shape_dist_traveled': Field(validators=non_negative),
+        'arrival_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT),
+        'departure_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT)
+    }
