@@ -47,11 +47,7 @@ class Repository(dict):
 
     def __iter__(self):
         for key, value in self.items():
-            if isinstance(value, list):
-                for entry in value:
-                    yield entry
-            else:
-                yield value
+            yield value
 
 
 class Feed:
