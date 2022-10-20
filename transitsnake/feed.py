@@ -22,8 +22,8 @@ from .trips import Trip
 
 class Repository(dict):
     def __init__(self, cls):
-        self.cls = cls
-        self.partial_keys = dict()
+        self._cls = cls
+        self._partial_keys = dict()
         super().__init__()
 
     def append(self, entry: BaseDatasetType):
@@ -32,18 +32,18 @@ class Repository(dict):
 
         partial_keys_values = entry.partial_keys_values()
         for partial_key, value in partial_keys_values.items():
-            if (partial_key, value) not in self.partial_keys:
-                self.partial_keys[(partial_key, value)] = []
-            self.partial_keys[(partial_key, value)].append(entry)
+            if (partial_key, value) not in self._partial_keys:
+                self._partial_keys[(partial_key, value)] = []
+            self._partial_keys[(partial_key, value)].append(entry)
 
     def get_by_partial_key(self, partial_key, value):
-        return self.partial_keys[(partial_key, value)]
+        return self._partial_keys[(partial_key, value)]
 
     def set_by_partial_key(self, partial_key, value, item):
-        self.partial_keys[(partial_key, value)] = item
+        self._partial_keys[(partial_key, value)] = item
 
     def has_by_partial_key(self, partial_key, value):
-        return (partial_key, value) in self.partial_keys
+        return (partial_key, value) in self._partial_keys
 
     def __iter__(self):
         for key, value in self.items():
