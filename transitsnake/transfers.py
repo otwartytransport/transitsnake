@@ -11,6 +11,8 @@ class TransferType(Enum):
     TIMED = 1
     MINIMUM_TIME = 2
     IMPOSSIBLE = 3
+    IN_SEAT = 4
+    IN_SEAT_FORBIDDEN = 5
 
 
 @dataclass
@@ -27,6 +29,14 @@ class Transfer(BaseDatasetType):
     to_trip_id: Optional[str] = None
     min_transfer_time: Optional[int] = None
 
+    @staticmethod
+    def in_seat_check(transfer):
+        return transfer.transfer_type in [TransferType.IN_SEAT, TransferType.IN_SEAT_FORBIDDEN]
+
     _meta = {
-        'min_transfer_time': Field(validators=non_negative)
+        'min_transfer_time': Field(validators=non_negative),
+        'from_stop_id': Field(conditional_required=in_seat_check),
+        'to_stop_id': Field(conditional_required=in_seat_check),
+        'from_trip_id': Field(conditional_required=in_seat_check),
+        'to_trip_id': Field(conditional_required=in_seat_check)
     }
