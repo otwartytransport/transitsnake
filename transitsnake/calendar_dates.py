@@ -14,6 +14,7 @@ class ExceptionType(Enum):
 @dataclass
 class CalendarDate(BaseDatasetType):
     filename: ClassVar[str] = 'calendar_dates.txt'
+    primary_key: ClassVar[tuple] = ('service_id', 'date')
 
     service_id: str
     date: datetime.date

@@ -8,6 +8,7 @@ from . import BaseDatasetType
 @dataclass
 class FeedInfo(BaseDatasetType):
     filename: ClassVar[str] = 'feed_info.txt'
+    primary_key: ClassVar[tuple] = None
 
     feed_publisher_name: str
     feed_publisher_url: str

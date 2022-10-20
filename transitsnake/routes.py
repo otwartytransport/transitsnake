@@ -24,6 +24,7 @@ class RouteType(Enum):
 @dataclass
 class Route(BaseDatasetType):
     filename: ClassVar[str] = 'routes.txt'
+    primary_key: ClassVar[tuple] = ('route_id',)
 
     route_id: str
     route_type: RouteType

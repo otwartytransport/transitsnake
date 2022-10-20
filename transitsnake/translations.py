@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, ClassVar
 
 from . import BaseDatasetType
 
@@ -19,7 +19,8 @@ class TableName(str, Enum):
 
 @dataclass
 class Translation(BaseDatasetType):
-    filename = 'translations.txt'
+    filename: ClassVar[str] = 'translations.txt'
+    primary_key: ClassVar[tuple] = ('table_name', 'field_name', 'language', 'record_id', 'record_sub_id', 'field_value')
 
     table_name: TableName
     field_name: str

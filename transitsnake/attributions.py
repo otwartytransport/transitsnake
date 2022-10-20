@@ -7,6 +7,7 @@ from .validation import url, email
 @dataclass
 class Attribution(BaseDatasetType):
     filename: ClassVar[str] = 'attributions.txt'
+    primary_key: ClassVar[tuple] = ('attribution_id',)
 
     organization_name: str
     attribution_id: Optional[str] = None

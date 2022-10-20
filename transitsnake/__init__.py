@@ -1,7 +1,9 @@
 import abc
 import csv
+import dataclasses
 import io
 import zipfile
+from typing import Tuple, Optional
 
 from transitsnake.validation import Field
 
@@ -11,6 +13,17 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def filename(self) -> str:
         pass
+
+    @property
+    @abc.abstractmethod
+    def primary_key(self) -> Optional[Tuple]:
+        return None
+
+    def primary_key_values(self):
+        if self.primary_key is None:
+            return None
+
+        return tuple([self.__dict__[x] for x in self.primary_key])
 
     @property
     def _meta(self) -> dict:
@@ -23,11 +36,20 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
         if not self._meta:
             return
 
+        for entry_name in dir(self):
+            global_validator = getattr(self, entry_name)
+            if not callable(global_validator) or not hasattr(global_validator, '_is_global_validator'):
+                continue
+
+            global_validator(dataset)
+
         for field_name, field_definition in self._meta.items():
             if not field_definition.global_conditional_required:
                 continue
 
             value = self.__dict__[field_name]
+            x = field_definition.global_conditional_required(self, dataset)
+            print(x)
             if value is None and field_definition.global_conditional_required(self, dataset):
                 raise ValueError(f'"{field_name}" global conditional requirements not met')
 
@@ -52,7 +74,7 @@ def dump(feed, fp, debug=False, validate=True):
         for dataset_type, data in feed.data.items():
             if len(data) == 0:
                 continue
-            type_attributes = data[0].__dict__.keys()
+            type_attributes = [x.name for x in dataclasses.fields(dataset_type)]
 
             fields = []
             for field_name in type_attributes:

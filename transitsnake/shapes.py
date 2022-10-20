@@ -8,6 +8,7 @@ from .types import Point
 
 class Shape(BaseModel, BaseDatasetType):
     filename: ClassVar[str] = 'shapes.txt'
+    primary_key: ClassVar[tuple] = ('shape_id', 'shape_pt_sequence')
 
     shape_id: str
     shape_pt_lat: float

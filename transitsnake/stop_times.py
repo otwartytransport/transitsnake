@@ -1,7 +1,7 @@
 import datetime
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, ClassVar
 
 from . import BaseDatasetType
 from .common import ContinuousPickupDropOff
@@ -22,7 +22,8 @@ class Timepoint(Enum):
 
 @dataclass
 class StopTime(BaseDatasetType):
-    filename = 'stop_times.txt'
+    filename: ClassVar[str] = 'stop_times.txt'
+    primary_key: ClassVar[tuple] = ('trip_id', 'stop_sequence')
 
     trip_id: str
     stop_id: str

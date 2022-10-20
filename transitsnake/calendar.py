@@ -13,6 +13,7 @@ class Operation(Enum):
 @dataclass
 class Calendar(BaseDatasetType):
     filename: ClassVar[str] = 'calendar.txt'
+    primary_key: ClassVar[tuple] = ('service_id',)
 
     service_id: str
     monday: Operation

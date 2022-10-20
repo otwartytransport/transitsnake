@@ -24,6 +24,7 @@ class IsBidirectional(Enum):
 @dataclass
 class Pathway(BaseDatasetType):
     filename: ClassVar[str] = 'pathways.txt'
+    primary_key: ClassVar[tuple] = ('pathway_id',)
 
     pathway_id: str
     from_stop_id: str

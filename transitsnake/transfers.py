@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, ClassVar
 
 from . import BaseDatasetType, Field
 from .validation import non_negative
@@ -15,7 +15,8 @@ class TransferType(Enum):
 
 @dataclass
 class Transfer(BaseDatasetType):
-    filename = 'transfers.txt'
+    filename: ClassVar[str] = 'transfers.txt'
+    primary_key: ClassVar[tuple] = ('from_stop_id', 'to_stop_id', 'from_trip_id', 'to_trip_id', 'from_route_id', 'to_route_id')
 
     transfer_type: TransferType
     from_stop_id: Optional[str] = None

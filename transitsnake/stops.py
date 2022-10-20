@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, ClassVar
 
 from . import BaseDatasetType, Field
 from .validation import latitude, longitude, url
@@ -16,7 +16,8 @@ class StopLocationType(Enum):
 
 @dataclass
 class Stop(BaseDatasetType):
-    filename = 'stops.txt'
+    filename: ClassVar[str] = 'stops.txt'
+    primary_key: ClassVar[tuple] = ('stop_id',)
 
     stop_id: str
     stop_code: Optional[str] = None

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, ClassVar
 
-from . import BaseDatasetType
+from . import BaseDatasetType, Field
+from .routes import Route
 
 
 class TripDirection(Enum):
@@ -24,7 +25,8 @@ class BikesAccessible(Enum):
 
 @dataclass
 class Trip(BaseDatasetType):
-    filename = 'trips.txt'
+    filename: ClassVar[str] = 'trips.txt'
+    primary_key: ClassVar[tuple] = ('trip_id',)
 
     route_id: str
     service_id: str
@@ -36,3 +38,7 @@ class Trip(BaseDatasetType):
     shape_id: Optional[str] = None
     wheelchair_accessible: Optional[WheelchairAccessible] = None
     bikes_allowed: Optional[BikesAccessible] = None
+
+    _meta = {
+        'shape_id': Field(global_conditional_required=lambda trip, dataset: dataset[Route][(trip.route_id,)])
+    }

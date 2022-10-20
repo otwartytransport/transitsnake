@@ -8,6 +8,7 @@ from .validation import Field, url, email
 @dataclass
 class Agency(BaseDatasetType):
     filename: ClassVar[str] = 'agency.txt'
+    primary_key: ClassVar[tuple] = ('agency_id',)
 
     agency_name: str
     agency_url: str

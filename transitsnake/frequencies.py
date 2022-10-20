@@ -14,6 +14,7 @@ class ExactTimes(Enum):
 @dataclass
 class Frequency(BaseDatasetType):
     filename: ClassVar[str] = 'frequencies.txt'
+    primary_key: ClassVar[tuple] = ('trip_id', 'start_time')
 
     trip_id: str
     start_time: datetime.time
