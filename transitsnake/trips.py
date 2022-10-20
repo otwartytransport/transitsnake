@@ -4,6 +4,7 @@ from typing import Optional, ClassVar
 
 from . import BaseDatasetType, Field
 from .routes import Route
+from .stop_times import StopTime
 
 
 class TripDirection(Enum):
@@ -39,6 +40,21 @@ class Trip(BaseDatasetType):
     wheelchair_accessible: Optional[WheelchairAccessible] = None
     bikes_allowed: Optional[BikesAccessible] = None
 
+    @staticmethod
+    def shape_id_required(trip, dataset):
+        if (trip.route_id,) in dataset[Route]:
+            route = dataset[Route][(trip.route_id,)]
+            if route.continuous_pickup is not None or route.continuous_drop_off is not None:
+                return True
+
+        if dataset[StopTime].has_by_partial_key(('trip_id',), (trip.trip_id,)):
+            stop_times = dataset[StopTime].get_by_partial_key(('trip_id',), (trip.trip_id,))
+            for stop_time in stop_times:
+                if stop_time.continuous_pickup is not None or stop_time.continuous_drop_off is not None:
+                    return True
+
+        return False
+
     _meta = {
-        'shape_id': Field(global_conditional_required=lambda trip, dataset: dataset[Route][(trip.route_id,)])
+        'shape_id': Field(global_conditional_required=shape_id_required)
     }
