@@ -10,6 +10,7 @@ from .validation import non_negative
 class Shape(BaseDatasetType):
     filename: ClassVar[str] = 'shapes.txt'
     primary_key: ClassVar[tuple] = ('shape_id', 'shape_pt_sequence')
+    partial_keys: ClassVar[List[tuple]] = [('shape_id',)]
 
     shape_id: str
     shape_pt_lat: float
