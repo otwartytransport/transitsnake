@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, ClassVar, Dict
 
-from . import BaseDatasetType, Field
+from .common import BaseDatasetType, Field
 from .validation import latitude, longitude, url
 
 

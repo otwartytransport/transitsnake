@@ -2,7 +2,7 @@ import datetime
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar
-from . import BaseDatasetType
+from .common import BaseDatasetType
 
 
 class Operation(Enum):

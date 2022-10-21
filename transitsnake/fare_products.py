@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional, Dict
 
-from transitsnake import BaseDatasetType, Field
+from .common import BaseDatasetType, Field
 from transitsnake.validation import currency_code
 
 

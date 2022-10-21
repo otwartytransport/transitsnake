@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional
 
-from . import BaseDatasetType
+from .common import BaseDatasetType
 
 
 @dataclass

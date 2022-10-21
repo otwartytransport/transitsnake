@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from . import BaseDatasetType
+from .common import BaseDatasetType
 from .agency import Agency
 from .areas import Area
 from .attributions import Attribution
@@ -21,6 +21,13 @@ from .stops import Stop
 from .transfers import Transfer
 from .translations import Translation
 from .trips import Trip
+
+types = [
+    Agency, Area, Attribution, Calendar, CalendarDate, FeedInfo,
+    Frequency, Level, Pathway, Route, Shape, StopArea, StopTime,
+    Stop, Transfer, Translation, Trip, FareProduct, FareLegRule, FareTransferRule
+]
+types_filename_mappings = dict(((file_type.filename, file_type) for file_type in types))
 
 
 class Repository(dict):
@@ -62,11 +69,7 @@ class Repository(dict):
 
 class Feed:
     def __init__(self):
-        self.data = dict(((cls, Repository(cls)) for cls in [
-            Agency, Area, Attribution, Calendar, CalendarDate, FeedInfo,
-            Frequency, Level, Pathway, Route, Shape, StopArea, StopTime,
-            Stop, Transfer, Translation, Trip, FareProduct, FareLegRule, FareTransferRule
-        ]))
+        self.data = dict(((cls, Repository(cls)) for cls in types))
 
     def add(self, *args: Union[BaseDatasetType, List[BaseDatasetType]]):
         for arg in args:

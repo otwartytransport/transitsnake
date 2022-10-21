@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional, List, Dict
 
-from . import BaseDatasetType, Field
+from .common import BaseDatasetType, Field
 from .types import Point
 from .validation import non_negative
 

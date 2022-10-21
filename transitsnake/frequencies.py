@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Optional
 
-from . import BaseDatasetType
+from .common import BaseDatasetType
 
 
 class ExactTimes(Enum):

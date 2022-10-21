@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, ClassVar, List, Dict
 
-from . import BaseDatasetType
+from .common import BaseDatasetType
 from .common import ContinuousPickupDropOff
 from .validation import non_negative, Field
 

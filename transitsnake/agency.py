@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional, ClassVar, Dict
 
-from . import BaseDatasetType
+from .common import BaseDatasetType
 from .validation import Field, url, email
 
 

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Optional, Dict
 
-from transitsnake import BaseDatasetType, Field
+from .common import BaseDatasetType, Field
 
 
 class FareTransferType(Enum):
