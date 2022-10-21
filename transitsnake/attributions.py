@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import ClassVar, Optional
+from typing import ClassVar, Optional, Dict
 from . import BaseDatasetType, Field
 from .validation import url, email
 
@@ -21,7 +21,7 @@ class Attribution(BaseDatasetType):
     attribution_email: Optional[str] = None
     attribution_phone: Optional[str] = None
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'attribution_url': Field(validators=url),
         'attribution_email': Field(validators=email),
     }

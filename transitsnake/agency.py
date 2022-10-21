@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, Dict
 
 from . import BaseDatasetType
 from .validation import Field, url, email
@@ -19,7 +19,7 @@ class Agency(BaseDatasetType):
     agency_fare_url: Optional[str] = None
     agency_email: Optional[str] = None
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'agency_id': Field(global_conditional_required=lambda full, dataset: len(dataset[Agency]) > 1),
         'agency_url': Field(validators=url),
         'agency_fare_url': Field(validators=url),

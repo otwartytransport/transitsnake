@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import ClassVar, Optional, List
+from typing import ClassVar, Optional, List, Dict
 
 from . import BaseDatasetType, Field
 from .types import Point
@@ -18,7 +18,7 @@ class Shape(BaseDatasetType):
     shape_pt_sequence: int
     shape_dist_traveled: Optional[float] = None
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'shape_pt_sequence': Field(validators=non_negative),
         'shape_dist_traveled': Field(validators=non_negative),
     }

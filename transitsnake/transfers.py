@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, Dict
 
 from . import BaseDatasetType, Field
 from .validation import non_negative
@@ -33,7 +33,7 @@ class Transfer(BaseDatasetType):
     def in_seat_check(transfer):
         return transfer.transfer_type in [TransferType.IN_SEAT, TransferType.IN_SEAT_FORBIDDEN]
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'min_transfer_time': Field(validators=non_negative),
         'from_stop_id': Field(conditional_required=in_seat_check),
         'to_stop_id': Field(conditional_required=in_seat_check),

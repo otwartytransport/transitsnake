@@ -3,7 +3,7 @@ import csv
 import dataclasses
 import io
 import zipfile
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, Dict
 
 from transitsnake.validation import Field
 
@@ -33,14 +33,14 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
         return dict(((index, tuple([self.__dict__[x] for x in index])) for index in self.partial_keys))
 
     @property
-    def _meta(self) -> dict:
+    def meta(self) -> Dict[str, Field]:
         return dict()
 
     def csv_data(self):
         return dict([(key, str(value)) for key, value in self.__dict__.items() if value is not None])
 
     def global_validate(self, dataset):
-        if not self._meta:
+        if not self.meta:
             return
 
         for entry_name in dir(self):
@@ -50,7 +50,7 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
 
             global_validator(dataset)
 
-        for field_name, field_definition in self._meta.items():
+        for field_name, field_definition in self.meta.items():
             if not field_definition.global_conditional_required:
                 continue
 
@@ -59,10 +59,10 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
                 raise ValueError(f'"{field_name}" global conditional requirements not met')
 
     def __post_init__(self):
-        if not self._meta:
+        if not self.meta:
             return
 
-        for field_name, field_definition in self._meta.items():
+        for field_name, field_definition in self.meta.items():
             value = self.__dict__[field_name]
             field_definition.validate(field_name, self, value)
 

@@ -1,7 +1,7 @@
 import datetime
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, ClassVar, List
+from typing import Optional, ClassVar, List, Dict
 
 from . import BaseDatasetType
 from .common import ContinuousPickupDropOff
@@ -39,7 +39,7 @@ class StopTime(BaseDatasetType):
     shape_dist_traveled: Optional[float] = None
     timepoint: Optional[Timepoint] = None
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'shape_dist_traveled': Field(validators=non_negative),
         'arrival_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT),
         'departure_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT)

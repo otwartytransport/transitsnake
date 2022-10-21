@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Optional
+from typing import ClassVar, Optional, Dict
 
 from . import BaseDatasetType, Field
 from .agency import Agency
@@ -40,7 +40,7 @@ class Route(BaseDatasetType):
     continuous_drop_off: Optional[ContinuousPickupDropOff] = None
     network_id: Optional[str] = None
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'agency_id': Field(global_conditional_required=lambda full, dataset: len(dataset[Agency]) > 1),
         'route_url': Field(validators=url),
         'route_color': Field(validators=color),

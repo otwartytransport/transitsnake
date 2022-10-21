@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Optional
+from typing import ClassVar, Optional, Dict
 
 from . import BaseDatasetType, Field
 from .validation import positive, non_negative
@@ -39,7 +39,7 @@ class Pathway(BaseDatasetType):
     signposted_as: Optional[str] = None
     reversed_signposted_as: Optional[str] = None
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'length': Field(validators=non_negative),
         'traversal_time': Field(validators=positive),
         'min_width': Field(validators=positive)

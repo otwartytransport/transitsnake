@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, Dict
 
 from . import BaseDatasetType, Field
 from .routes import Route
@@ -55,6 +55,6 @@ class Trip(BaseDatasetType):
 
         return False
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'shape_id': Field(global_conditional_required=shape_id_required)
     }

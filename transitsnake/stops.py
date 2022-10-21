@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, Dict
 
 from . import BaseDatasetType, Field
 from .validation import latitude, longitude, url
@@ -41,7 +41,7 @@ class Stop(BaseDatasetType):
     def _parent_required(self):
         return self.location_type in [StopLocationType.ENTRANCE_EXIT, StopLocationType.GENERIC_NODE, StopLocationType.BOARDING_AREA]
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'stop_name': Field(conditional_required=_coords_required),
         'parent_station': Field(conditional_required=_parent_required),
         'stop_lat': Field(validators=latitude, conditional_required=_coords_required),

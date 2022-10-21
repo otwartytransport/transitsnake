@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, Dict
 
 from . import BaseDatasetType, Field
 
@@ -30,7 +30,7 @@ class Translation(BaseDatasetType):
     record_sub_id: Optional[str] = None
     field_value: Optional[str] = None
 
-    _meta = {
+    meta: ClassVar[Dict[str, Field]] = {
         'record_id': Field(
             conditional_required=lambda trans: not trans.field_value,
             conditional_forbidden=lambda trans: trans.field_value or trans.table_name == TableName.FEED_INFO
