@@ -37,12 +37,19 @@ class Repository(dict):
             self._partial_keys[(partial_key, value)].append(entry)
 
     def get_by_partial_key(self, partial_key, value):
+        if partial_key == self._cls.primary_key:
+            return self[value]
         return self._partial_keys[(partial_key, value)]
 
     def set_by_partial_key(self, partial_key, value, item):
+        if partial_key == self._cls.primary_key:
+            self[value] = item
+            return
         self._partial_keys[(partial_key, value)] = item
 
     def has_by_partial_key(self, partial_key, value):
+        if partial_key == self._cls.primary_key:
+            return value in self
         return (partial_key, value) in self._partial_keys
 
     def __iter__(self):
