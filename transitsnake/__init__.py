@@ -84,7 +84,7 @@ def dump(feed, fp, debug=False, validate=True):
             fields = []
             for field_name in type_attributes:
                 for entry in data:
-                    if field_name in entry.__dict__ and entry.__dict__[field_name] is not None:
+                    if entry.__dict__[field_name] is not None:
                         fields.append(field_name)
                         break
 
