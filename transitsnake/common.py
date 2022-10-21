@@ -2,7 +2,7 @@ from enum import Enum
 import abc
 from typing import Tuple, Optional, List, Dict
 
-from transitsnake.validation import Field
+from .validation import Field
 
 
 class BaseDatasetType(metaclass=abc.ABCMeta):
