@@ -3,7 +3,7 @@ import dataclasses
 import io
 import zipfile
 
-from transitsnake.feed import types_filename_mappings, Feed
+from .feed import types_filename_mappings, Feed
 
 
 def load(fp):
@@ -14,9 +14,7 @@ def load(fp):
             cls = types_filename_mappings[filename]
 
             file = archive.open(filename, 'r')
-            memory = io.StringIO()
-            memory.write(file.read().decode('utf-8'))
-            memory.seek(0)
+            memory = io.StringIO(file.read().decode('utf-8'))
 
             reader = csv.DictReader(memory)
             for row in reader:
