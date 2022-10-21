@@ -6,6 +6,9 @@ from .areas import Area
 from .attributions import Attribution
 from .calendar import Calendar
 from .calendar_dates import CalendarDate
+from .fare_leg_rules import FareLegRule
+from .fare_products import FareProduct
+from .fare_transfer_rules import FareTransferRule
 from .feed_info import FeedInfo
 from .frequencies import Frequency
 from .levels import Level
@@ -62,7 +65,7 @@ class Feed:
         self.data = dict(((cls, Repository(cls)) for cls in [
             Agency, Area, Attribution, Calendar, CalendarDate, FeedInfo,
             Frequency, Level, Pathway, Route, Shape, StopArea, StopTime,
-            Stop, Transfer, Translation, Trip
+            Stop, Transfer, Translation, Trip, FareProduct, FareLegRule, FareTransferRule
         ]))
 
     def add(self, *args: Union[BaseDatasetType, List[BaseDatasetType]]):
