@@ -6,5 +6,8 @@ setup(
     packages=['transitsnake'],
     license='Apache License 2.0',
     author='Adikso',
-    description='Library for creating and reading GTFS files'
+    description='Library for creating and reading GTFS files',
+    install_requires=[
+        'validators~=0.20.0'
+    ]
 )
