@@ -6,7 +6,7 @@ import zipfile
 from .feed import types_filename_mappings, Feed
 
 
-def load(fp):
+def load(fp, hooks=None):
     with zipfile.ZipFile(fp, mode="r", compression=zipfile.ZIP_DEFLATED) as archive:
         feed = Feed()
 
@@ -18,9 +18,19 @@ def load(fp):
 
             reader = csv.DictReader(memory)
             for row in reader:
-                feed.add(cls(**row))
+                params = dict()
+                params.update(row)
+                if hooks and cls in hooks:
+                    params.update({'_hooks': hooks[cls]})
+
+                feed.add(cls(**params))
 
         return feed
+
+
+def loads(data, hooks=None):
+    fp = io.BytesIO(data)
+    return load(fp, hooks=hooks)
 
 
 def dump(feed, fp, validate=True):
@@ -48,3 +58,9 @@ def dump(feed, fp, validate=True):
                 writer.writerow(value.csv_data())
 
             archive.writestr(dataset_type.filename, memory.getvalue())
+
+
+def dumps(feed, validate=True) -> bytes:
+    fp = io.BytesIO()
+    dump(feed, fp, validate=validate)
+    return fp.getvalue()

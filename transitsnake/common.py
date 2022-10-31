@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 import abc
 from typing import Tuple, Optional, List, Dict
@@ -5,7 +6,10 @@ from typing import Tuple, Optional, List, Dict
 from .validation import Field
 
 
+@dataclass
 class BaseDatasetType(metaclass=abc.ABCMeta):
+    _hooks: list
+
     @property
     @abc.abstractmethod
     def filename(self) -> str:
@@ -58,6 +62,10 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
     def __post_init__(self):
         if not self.meta:
             return
+
+        if self._hooks:
+            for hook in self._hooks:
+                hook(self)
 
         for field_name, field_definition in self.meta.items():
             value = self.__dict__[field_name]
