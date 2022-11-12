@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional, Dict
-from .common import BaseDatasetType, Field
-from .validation import url, email
+from transitsnake.common import BaseDatasetType, Field
+from transitsnake.validation import url, email
 
 
 @dataclass

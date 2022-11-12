@@ -4,10 +4,12 @@ from typing import ClassVar, Annotated
 
 from dataclass_wizard import Pattern
 
-from .common import BaseDatasetType, NonStrictEnum
+from transitsnake.common import BaseDatasetType, NonStrictEnum
 
 
 class ExceptionType(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     SERVICE_ADDED = 1
     SERVICE_REMOVED = 2
 

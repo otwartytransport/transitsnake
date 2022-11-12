@@ -4,10 +4,12 @@ from typing import ClassVar, Annotated
 
 from dataclass_wizard import Pattern
 
-from .common import BaseDatasetType, NonStrictEnum
+from transitsnake.common import BaseDatasetType, NonStrictEnum
 
 
 class Operation(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     AVAILABLE = 1
     UNAVAILABLE = 0
 

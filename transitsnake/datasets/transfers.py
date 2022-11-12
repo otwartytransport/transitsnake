@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 from typing import Optional, ClassVar, Dict
 
-from .common import BaseDatasetType, Field, NonStrictEnum
-from .validation import non_negative
+from transitsnake.common import BaseDatasetType, Field, NonStrictEnum
+from transitsnake.validation import non_negative
 
 
 class TransferType(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     RECOMMENDED = 0
     TIMED = 1
     MINIMUM_TIME = 2

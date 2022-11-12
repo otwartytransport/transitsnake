@@ -1,12 +1,14 @@
 from dataclasses import dataclass
 from typing import Optional, ClassVar, List, Dict
 
-from .common import BaseDatasetType, NonStrictEnum
-from .common import ContinuousPickupDropOff
-from .validation import non_negative, Field
+from transitsnake.common import BaseDatasetType, NonStrictEnum
+from transitsnake.common import ContinuousPickupDropOff
+from transitsnake.validation import non_negative, Field
 
 
 class PickupDropOffType(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     ALLOWED = 0
     NOT_AVAILABLE = 1
     MUST_PHONE = 2
@@ -14,6 +16,8 @@ class PickupDropOffType(NonStrictEnum):
 
 
 class Timepoint(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     APPROXIMATE = 0
     EXACT = 1
 

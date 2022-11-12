@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional, Dict
 
-from .common import BaseDatasetType, Field, NonStrictEnum
-from .agency import Agency
-from .common import ContinuousPickupDropOff
-from .validation import url, non_negative, color
+from transitsnake.common import BaseDatasetType, Field, NonStrictEnum
+from transitsnake.common import ContinuousPickupDropOff
+from transitsnake.datasets.agency import Agency
+from transitsnake.validation import url, non_negative, color
 
 
 class RouteType(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     LIGHT_RAIL = 0
     SUBWAY = 1
     RAIL = 2

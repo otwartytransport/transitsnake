@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 from typing import Optional, ClassVar, Dict
 
-from .common import BaseDatasetType, Field, NonStrictEnum
-from .validation import latitude, longitude, url
+from transitsnake.common import BaseDatasetType, Field, NonStrictEnum
+from transitsnake.validation import latitude, longitude, url
 
 
 class StopLocationType(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     STOP = 0
     STATION = 1
     ENTRANCE_EXIT = 2

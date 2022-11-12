@@ -2,10 +2,12 @@ import datetime
 from dataclasses import dataclass
 from typing import ClassVar, Optional
 
-from .common import BaseDatasetType, NonStrictEnum
+from transitsnake.common import BaseDatasetType, NonStrictEnum
 
 
 class ExactTimes(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     FREQUENCY_BASED = 0
     SCHEDULE_BASED = 1
 

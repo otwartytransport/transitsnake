@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional, Dict
 
-from .common import BaseDatasetType, Field, NonStrictEnum
-from .validation import positive, non_negative
+from transitsnake.common import BaseDatasetType, Field, NonStrictEnum
+from transitsnake.validation import positive, non_negative
 
 
 class PathwayMode(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     WALKWAY = 1
     STAIRS = 2
     MOVING_SIDEWALK = 3
@@ -16,6 +18,8 @@ class PathwayMode(NonStrictEnum):
 
 
 class IsBidirectional(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     UNIDIRECTIONAL = 0
     BIDIRECTIONAL = 1
 

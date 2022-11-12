@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional
 
-from .common import BaseDatasetType
+from transitsnake.common import BaseDatasetType
 
 
 @dataclass

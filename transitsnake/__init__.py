@@ -5,7 +5,7 @@ import zipfile
 
 from dataclass_wizard import fromdict
 
-from .datasets import types_filename_mappings
+from transitsnake.datasets import types_filename_mappings
 from .feed import Feed
 
 

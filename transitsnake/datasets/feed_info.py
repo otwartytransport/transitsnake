@@ -4,7 +4,7 @@ from typing import Optional, ClassVar, Annotated
 
 from dataclass_wizard import Pattern
 
-from .common import BaseDatasetType
+from transitsnake.common import BaseDatasetType
 
 
 @dataclass

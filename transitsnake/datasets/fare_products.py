@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional, Dict
 
-from .common import BaseDatasetType, Field
-from .validation import currency_code
+from transitsnake.common import BaseDatasetType, Field
+from transitsnake.validation import currency_code
 
 
 @dataclass

@@ -1,14 +1,15 @@
+import dataclasses
 from dataclasses import dataclass
 from enum import Enum
 import abc
-from typing import Tuple, Optional, List, Dict
-
+from typing import Tuple, Optional, List, Dict, Any
+from dataclass_wizard import asdict, DumpMeta, DumpMixin
 from .utils import get_optional_fields
 from .validation import Field
 
 
 @dataclass
-class BaseDatasetType(metaclass=abc.ABCMeta):
+class BaseDatasetType(DumpMixin, metaclass=abc.ABCMeta):
     @property
     @abc.abstractmethod
     def filename(self) -> str:
@@ -37,7 +38,8 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
         return dict()
 
     def csv_data(self):
-        return dict([(key, str(value)) for key, value in self.__dict__.items() if value is not None])
+        DumpMeta(key_transform='SNAKE').bind_to(self.__class__)
+        return dict([(key, str(value)) for key, value in asdict(self).items() if value is not None])
 
     def global_validate(self, dataset):
         if not self.meta:
@@ -62,8 +64,15 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
 
             field_definition.validate(field_name, self, value)
 
+    def __pre_as_dict__(self):
+        for key, value in self.__dict__.items():
+            if isinstance(value, NonStrictEnum) and value.value == -1:
+                self.__dict__[key] = value._value
+
 
 class ContinuousPickupDropOff(Enum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     ALLOWED = 0
     NOT_AVAILABLE = 1
     MUST_PHONE = 2
@@ -75,4 +84,10 @@ class NonStrictEnum(Enum):
     def _missing_(cls, value):
         if isinstance(value, str):
             return cls(int(value))
-        return super()._missing_(value)
+        missing = super()._missing_(value)
+        if missing:
+            return missing
+
+        unknown = cls(-1)
+        unknown._value = value
+        return unknown

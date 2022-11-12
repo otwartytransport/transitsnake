@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, ClassVar, Dict
 
-from .common import BaseDatasetType, Field
+from transitsnake.common import BaseDatasetType, Field
 
 
 class TableName(str, Enum):

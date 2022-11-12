@@ -1,23 +1,29 @@
 from dataclasses import dataclass
 from typing import Optional, ClassVar, Dict
 
-from .common import BaseDatasetType, Field, NonStrictEnum
+from transitsnake.common import BaseDatasetType, Field, NonStrictEnum
 from .routes import Route
 from .stop_times import StopTime
 
 
 class TripDirection(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     ONE = 0
     OPPOSITE = 1
 
 
 class WheelchairAccessible(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     NO_INFORMATION = 0
     YES = 1
     NO = 2
 
 
 class BikesAccessible(NonStrictEnum):
+    UNSUPPORTED_VALUE = -1  # Not a part of GTFS Specification
+
     NO_INFORMATION = 0
     YES = 1
     NO = 2
