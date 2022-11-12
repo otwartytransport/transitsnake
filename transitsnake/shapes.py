@@ -2,8 +2,13 @@ from dataclasses import dataclass
 from typing import ClassVar, Optional, List, Dict
 
 from .common import BaseDatasetType, Field
-from .types import Point
 from .validation import non_negative
+
+
+class Point:
+    def __init__(self, lon: float, lat: float):
+        self.lon = lon
+        self.lat = lat
 
 
 @dataclass

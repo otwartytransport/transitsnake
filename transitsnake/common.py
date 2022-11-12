@@ -3,12 +3,13 @@ from enum import Enum
 import abc
 from typing import Tuple, Optional, List, Dict
 
+from .utils import get_optional_fields
 from .validation import Field
 
 
 @dataclass
 class BaseDatasetType(metaclass=abc.ABCMeta):
-    _hooks: list
+    _hooks: Optional[list]
 
     @property
     @abc.abstractmethod
@@ -44,13 +45,6 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
         if not self.meta:
             return
 
-        for entry_name in dir(self):
-            global_validator = getattr(self, entry_name)
-            if not callable(global_validator) or not hasattr(global_validator, '_is_global_validator'):
-                continue
-
-            global_validator(dataset)
-
         for field_name, field_definition in self.meta.items():
             if not field_definition.global_conditional_required:
                 continue
@@ -69,14 +63,10 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
 
         for field_name, field_definition in self.meta.items():
             value = self.__dict__[field_name]
-            field_definition.validate(field_name, self, value)
-
-        for entry_name in dir(self):
-            root_validator = getattr(self, entry_name)
-            if not callable(root_validator) or not hasattr(root_validator, '_is_validator'):
+            if value is None and field_name in get_optional_fields(self.__class__):
                 continue
 
-            root_validator()
+            field_definition.validate(field_name, self, value)
 
 
 class ContinuousPickupDropOff(Enum):

@@ -36,28 +36,6 @@ class Field:
             self.validators(field_value)
 
 
-def validator(fields: Union[str, List[str]] = None):
-    def outer_wrapper(f):
-        def inner_wrapper(*args, **kwargs):
-            return f(*args, **kwargs)
-
-        inner_wrapper._is_validator = True
-        return inner_wrapper
-
-    return outer_wrapper
-
-
-def global_validator(fields: Union[str, List[str]] = None):
-    def outer_wrapper(f):
-        def inner_wrapper(*args, **kwargs):
-            return f(*args, **kwargs)
-
-        inner_wrapper._is_global_validator = True
-        return inner_wrapper
-
-    return outer_wrapper
-
-
 def url(value):
     result = valid.url(value)
     if result is not True:
@@ -81,12 +59,12 @@ def positive(value):
 
 
 def longitude(value):
-    if value < -180 or value > 180:
+    if float(value) < -180 or float(value) > 180:
         raise ValueError('invalid longitude')
 
 
 def latitude(value):
-    if value < -90 or value > 90:
+    if float(value) < -90 or float(value) > 90:
         raise ValueError('invalid latitude')
 
 

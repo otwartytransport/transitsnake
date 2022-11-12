@@ -3,14 +3,18 @@ import dataclasses
 import io
 import zipfile
 
-from .feed import types_filename_mappings, Feed
+from .datasets import types_filename_mappings
+from .feed import Feed
 
 
 def load(fp, hooks=None):
     with zipfile.ZipFile(fp, mode="r", compression=zipfile.ZIP_DEFLATED) as archive:
-        feed = Feed()
+        new_feed = Feed()
 
         for filename in archive.namelist():
+            if filename not in types_filename_mappings:
+                continue
+
             cls = types_filename_mappings[filename]
 
             file = archive.open(filename, 'r')
@@ -20,12 +24,11 @@ def load(fp, hooks=None):
             for row in reader:
                 params = dict()
                 params.update(row)
-                if hooks and cls in hooks:
-                    params.update({'_hooks': hooks[cls]})
+                params.update({'_hooks': hooks[cls] if hooks and cls in hooks else []})
 
-                feed.add(cls(**params))
+                new_feed.add(cls(**params))
 
-        return feed
+        return new_feed
 
 
 def loads(data, hooks=None):
