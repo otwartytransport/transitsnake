@@ -3,11 +3,13 @@ import dataclasses
 import io
 import zipfile
 
+from dataclass_wizard import fromdict
+
 from .datasets import types_filename_mappings
 from .feed import Feed
 
 
-def load(fp, hooks=None):
+def load(fp, validate=True, hooks=None):
     with zipfile.ZipFile(fp, mode="r", compression=zipfile.ZIP_DEFLATED) as archive:
         new_feed = Feed()
 
@@ -22,21 +24,24 @@ def load(fp, hooks=None):
 
             reader = csv.DictReader(memory)
             for row in reader:
-                params = dict()
-                params.update(row)
-                params.update({'_hooks': hooks[cls] if hooks and cls in hooks else []})
+                instance = fromdict(cls, row)
+                if hooks and cls in hooks:
+                    for hook in hooks[cls]:
+                        hook(instance)
 
-                new_feed.add(cls(**params))
+                if validate:
+                    instance.validate()
+                new_feed.add(instance)
 
         return new_feed
 
 
-def loads(data, hooks=None):
+def loads(data, validate=True, hooks=None):
     fp = io.BytesIO(data)
-    return load(fp, hooks=hooks)
+    return load(fp, validate=validate, hooks=hooks)
 
 
-def dump(feed, fp, validate=True):
+def dump(feed, fp, validate=True, hooks=None):
     with zipfile.ZipFile(fp, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
         for dataset_type, data in feed.data.items():
             if len(data) == 0:
@@ -56,14 +61,19 @@ def dump(feed, fp, validate=True):
             writer.writeheader()
             for value in data:
                 if validate:
+                    value.validate()
                     value.global_validate(feed.data)
+
+                if hooks and dataset_type in hooks:
+                    for hook in hooks[dataset_type]:
+                        hook(value)
 
                 writer.writerow(value.csv_data())
 
             archive.writestr(dataset_type.filename, memory.getvalue())
 
 
-def dumps(feed, validate=True) -> bytes:
+def dumps(feed, validate=True, hooks=None) -> bytes:
     fp = io.BytesIO()
-    dump(feed, fp, validate=validate)
+    dump(feed, fp, validate=validate, hooks=hooks)
     return fp.getvalue()

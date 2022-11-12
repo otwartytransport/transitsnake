@@ -9,8 +9,6 @@ from .validation import Field
 
 @dataclass
 class BaseDatasetType(metaclass=abc.ABCMeta):
-    _hooks: Optional[list]
-
     @property
     @abc.abstractmethod
     def filename(self) -> str:
@@ -53,13 +51,9 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
             if value is None and field_definition.global_conditional_required(self, dataset):
                 raise ValueError(f'"{field_name}" global conditional requirements not met')
 
-    def __post_init__(self):
+    def validate(self):
         if not self.meta:
             return
-
-        if self._hooks:
-            for hook in self._hooks:
-                hook(self)
 
         for field_name, field_definition in self.meta.items():
             value = self.__dict__[field_name]
@@ -74,3 +68,11 @@ class ContinuousPickupDropOff(Enum):
     NOT_AVAILABLE = 1
     MUST_PHONE = 2
     ON_REQUEST_TO_DRIVER = 3
+
+
+class NonStrictEnum(Enum):
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            return cls(int(value))
+        return super()._missing_(value)

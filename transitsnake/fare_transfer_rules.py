@@ -1,17 +1,16 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import ClassVar, Optional, Dict
 
-from .common import BaseDatasetType, Field
+from .common import BaseDatasetType, Field, NonStrictEnum
 
 
-class FareTransferType(Enum):
+class FareTransferType(NonStrictEnum):
     A_PLUS_AB = 0
     A_PLUS_AB_PLUS_B = 1
     AB = 2
 
 
-class DurationLimitType(Enum):
+class DurationLimitType(NonStrictEnum):
     DEPARTURE_TO_ARRIVAL = 0
     DEPARTURE_TO_DEPARTURE = 1
     ARRIVAL_TO_DEPARTURE = 2

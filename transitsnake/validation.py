@@ -59,12 +59,12 @@ def positive(value):
 
 
 def longitude(value):
-    if float(value) < -180 or float(value) > 180:
+    if value < -180 or value > 180:
         raise ValueError('invalid longitude')
 
 
 def latitude(value):
-    if float(value) < -90 or float(value) > 90:
+    if value < -90 or value > 90:
         raise ValueError('invalid latitude')
 
 

@@ -1,12 +1,11 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional, ClassVar, Dict
 
-from .common import BaseDatasetType, Field
+from .common import BaseDatasetType, Field, NonStrictEnum
 from .validation import non_negative
 
 
-class TransferType(Enum):
+class TransferType(NonStrictEnum):
     RECOMMENDED = 0
     TIMED = 1
     MINIMUM_TIME = 2

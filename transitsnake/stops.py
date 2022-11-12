@@ -1,12 +1,11 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional, ClassVar, Dict
 
-from .common import BaseDatasetType, Field
+from .common import BaseDatasetType, Field, NonStrictEnum
 from .validation import latitude, longitude, url
 
 
-class StopLocationType(Enum):
+class StopLocationType(NonStrictEnum):
     STOP = 0
     STATION = 1
     ENTRANCE_EXIT = 2

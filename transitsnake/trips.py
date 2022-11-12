@@ -1,24 +1,23 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional, ClassVar, Dict
 
-from .common import BaseDatasetType, Field
+from .common import BaseDatasetType, Field, NonStrictEnum
 from .routes import Route
 from .stop_times import StopTime
 
 
-class TripDirection(Enum):
+class TripDirection(NonStrictEnum):
     ONE = 0
     OPPOSITE = 1
 
 
-class WheelchairAccessible(Enum):
+class WheelchairAccessible(NonStrictEnum):
     NO_INFORMATION = 0
     YES = 1
     NO = 2
 
 
-class BikesAccessible(Enum):
+class BikesAccessible(NonStrictEnum):
     NO_INFORMATION = 0
     YES = 1
     NO = 2

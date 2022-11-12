@@ -1,12 +1,13 @@
 import datetime
 from dataclasses import dataclass
-from enum import Enum
-from typing import ClassVar
+from typing import ClassVar, Annotated
 
-from .common import BaseDatasetType
+from dataclass_wizard import Pattern
+
+from .common import BaseDatasetType, NonStrictEnum
 
 
-class ExceptionType(Enum):
+class ExceptionType(NonStrictEnum):
     SERVICE_ADDED = 1
     SERVICE_REMOVED = 2
 
@@ -17,5 +18,5 @@ class CalendarDate(BaseDatasetType):
     primary_key: ClassVar[tuple] = ('service_id', 'date')
 
     service_id: str
-    date: datetime.date
+    date: Annotated[datetime.date, Pattern('%Y%m%d')]
     exception_type: ExceptionType

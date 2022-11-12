@@ -1,14 +1,13 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import ClassVar, Optional, Dict
 
-from .common import BaseDatasetType, Field
+from .common import BaseDatasetType, Field, NonStrictEnum
 from .agency import Agency
 from .common import ContinuousPickupDropOff
 from .validation import url, non_negative, color
 
 
-class RouteType(Enum):
+class RouteType(NonStrictEnum):
     LIGHT_RAIL = 0
     SUBWAY = 1
     RAIL = 2

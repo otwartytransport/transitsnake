@@ -10,6 +10,7 @@ setup(
     author_email='contact@otwartytransport.pl',
     description='Library for creating and reading GTFS files',
     install_requires=[
-        'validators~=0.20.0'
+        'validators~=0.20.0',
+        'dataclass-wizard~=0.22.2'
     ]
 )

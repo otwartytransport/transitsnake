@@ -1,12 +1,11 @@
 import datetime
 from dataclasses import dataclass
-from enum import Enum
 from typing import ClassVar, Optional
 
-from .common import BaseDatasetType
+from .common import BaseDatasetType, NonStrictEnum
 
 
-class ExactTimes(Enum):
+class ExactTimes(NonStrictEnum):
     FREQUENCY_BASED = 0
     SCHEDULE_BASED = 1
 

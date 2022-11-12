@@ -1,21 +1,19 @@
-import datetime
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional, ClassVar, List, Dict
 
-from .common import BaseDatasetType
+from .common import BaseDatasetType, NonStrictEnum
 from .common import ContinuousPickupDropOff
 from .validation import non_negative, Field
 
 
-class PickupDropOffType(Enum):
+class PickupDropOffType(NonStrictEnum):
     ALLOWED = 0
     NOT_AVAILABLE = 1
     MUST_PHONE = 2
     ON_REQUEST_TO_DRIVER = 3
 
 
-class Timepoint(Enum):
+class Timepoint(NonStrictEnum):
     APPROXIMATE = 0
     EXACT = 1
 
@@ -29,8 +27,8 @@ class StopTime(BaseDatasetType):
     trip_id: str
     stop_id: str
     stop_sequence: int
-    arrival_time: Optional[datetime.time] = None
-    departure_time: Optional[datetime.time] = None
+    arrival_time: Optional[str] = None
+    departure_time: Optional[str] = None
     stop_headsign: Optional[str] = None
     pickup_type: Optional[PickupDropOffType] = None
     drop_off_type: Optional[PickupDropOffType] = None

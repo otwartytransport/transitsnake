@@ -1,12 +1,11 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import ClassVar, Optional, Dict
 
-from .common import BaseDatasetType, Field
+from .common import BaseDatasetType, Field, NonStrictEnum
 from .validation import positive, non_negative
 
 
-class PathwayMode(Enum):
+class PathwayMode(NonStrictEnum):
     WALKWAY = 1
     STAIRS = 2
     MOVING_SIDEWALK = 3
@@ -16,7 +15,7 @@ class PathwayMode(Enum):
     EXIT_GATE = 7
 
 
-class IsBidirectional(Enum):
+class IsBidirectional(NonStrictEnum):
     UNIDIRECTIONAL = 0
     BIDIRECTIONAL = 1
 

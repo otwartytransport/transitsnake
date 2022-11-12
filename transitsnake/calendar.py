@@ -1,11 +1,10 @@
 import datetime
 from dataclasses import dataclass
-from enum import Enum
 from typing import ClassVar
-from .common import BaseDatasetType
+from .common import BaseDatasetType, NonStrictEnum
 
 
-class Operation(Enum):
+class Operation(NonStrictEnum):
     AVAILABLE = 1
     UNAVAILABLE = 0
 
