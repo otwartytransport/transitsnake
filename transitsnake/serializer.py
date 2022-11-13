@@ -23,7 +23,7 @@ def serialize(cls, instance):
             continue
 
         if field_definition.field_type == datetime.date:
-            result[field_name] = value.strftime("%Y%m%d")
+            result[field_name] = str(value.year) + str(value.month).rjust(2, '0') + str(value.day).rjust(2, '0')
         elif issubclass(field_definition.field_type, NonStrictEnum):
             if value.value == -1:
                 result[field_name] = str(value._value)
@@ -42,7 +42,7 @@ def deserialize(cls, instance):
     for field_name, value in instance.items():
         field_definition = definition[field_name]
         if field_definition.field_type == datetime.date:
-            result[field_name] = datetime.datetime.strptime(value, "%Y%m%d")
+            result[field_name] = datetime.date(int(value[:4]), int(value[4:6]), int(value[6:8]))
         else:
             result[field_name] = field_definition.field_type(value)
 
