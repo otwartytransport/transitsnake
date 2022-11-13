@@ -1,15 +1,13 @@
-import dataclasses
 from dataclasses import dataclass
 from enum import Enum
 import abc
-from typing import Tuple, Optional, List, Dict, Any
-from dataclass_wizard import asdict, DumpMeta, DumpMixin
+from typing import Tuple, Optional, List, Dict
 from .utils import get_optional_fields
 from .validation import Field
 
 
 @dataclass
-class BaseDatasetType(DumpMixin, metaclass=abc.ABCMeta):
+class BaseDatasetType(metaclass=abc.ABCMeta):
     @property
     @abc.abstractmethod
     def filename(self) -> str:
@@ -37,10 +35,6 @@ class BaseDatasetType(DumpMixin, metaclass=abc.ABCMeta):
     def meta(self) -> Dict[str, Field]:
         return dict()
 
-    def csv_data(self):
-        DumpMeta(key_transform='SNAKE').bind_to(self.__class__)
-        return dict([(key, str(value)) for key, value in asdict(self).items() if value is not None])
-
     def global_validate(self, dataset):
         if not self.meta:
             return
@@ -63,11 +57,6 @@ class BaseDatasetType(DumpMixin, metaclass=abc.ABCMeta):
                 continue
 
             field_definition.validate(field_name, self, value)
-
-    def __pre_as_dict__(self):
-        for key, value in self.__dict__.items():
-            if isinstance(value, NonStrictEnum) and value.value == -1:
-                self.__dict__[key] = value._value
 
 
 class ContinuousPickupDropOff(Enum):

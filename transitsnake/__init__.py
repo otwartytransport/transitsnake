@@ -3,10 +3,9 @@ import dataclasses
 import io
 import zipfile
 
-from dataclass_wizard import fromdict
-
 from transitsnake.datasets import types_filename_mappings
 from .feed import Feed
+from .serializer import deserialize, serialize
 
 
 def load(fp, validate=True, hooks=None):
@@ -21,13 +20,11 @@ def load(fp, validate=True, hooks=None):
                 continue
 
             cls = types_filename_mappings[filename]
-
-            file = archive.open(filename, 'r')
             memory = io.StringIO(file.read().decode('utf-8'))
 
             reader = csv.DictReader(memory)
             for row in reader:
-                instance = fromdict(cls, row)
+                instance = deserialize(cls, row)
                 if hooks and cls in hooks:
                     for hook in hooks[cls]:
                         hook(instance)
@@ -71,7 +68,7 @@ def dump(feed, fp, validate=True, hooks=None):
                     for hook in hooks[dataset_type]:
                         hook(value)
 
-                writer.writerow(value.csv_data())
+                writer.writerow(serialize(dataset_type, value))
 
             archive.writestr(dataset_type.filename, memory.getvalue())
 

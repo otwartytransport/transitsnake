@@ -2,8 +2,6 @@ import datetime
 from dataclasses import dataclass
 from typing import ClassVar, Annotated
 
-from dataclass_wizard import Pattern
-
 from transitsnake.common import BaseDatasetType, NonStrictEnum
 
 
@@ -20,5 +18,5 @@ class CalendarDate(BaseDatasetType):
     primary_key: ClassVar[tuple] = ('service_id', 'date')
 
     service_id: str
-    date: Annotated[datetime.date, Pattern('%Y%m%d')]
+    date: datetime.date
     exception_type: ExceptionType

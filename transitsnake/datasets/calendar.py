@@ -2,8 +2,6 @@ import datetime
 from dataclasses import dataclass
 from typing import ClassVar, Annotated
 
-from dataclass_wizard import Pattern
-
 from transitsnake.common import BaseDatasetType, NonStrictEnum
 
 
@@ -27,5 +25,5 @@ class Calendar(BaseDatasetType):
     friday: Operation
     saturday: Operation
     sunday: Operation
-    start_date: Annotated[datetime.date, Pattern('%Y%m%d')]
-    end_date: Annotated[datetime.date, Pattern('%Y%m%d')]
+    start_date: datetime.date
+    end_date: datetime.date
