@@ -14,7 +14,10 @@ def load(fp, validate=True, hooks=None):
         new_feed = Feed()
 
         for filename in archive.namelist():
+            file = archive.open(filename, 'r')
+
             if filename not in types_filename_mappings:
+                new_feed.add_extra_file(filename, file.read())
                 continue
 
             cls = types_filename_mappings[filename]
@@ -71,6 +74,9 @@ def dump(feed, fp, validate=True, hooks=None):
                 writer.writerow(value.csv_data())
 
             archive.writestr(dataset_type.filename, memory.getvalue())
+
+        for filename, content in feed.extra_files.items():
+            archive.writestr(filename, content)
 
 
 def dumps(feed, validate=True, hooks=None) -> bytes:

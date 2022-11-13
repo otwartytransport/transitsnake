@@ -43,6 +43,7 @@ class Repository(dict):
 class Feed:
     def __init__(self):
         self.data = dict(((cls, Repository(cls)) for cls in transitsnake.datasets.types))
+        self.extra_files = dict()
 
     def add(self, *args: Union[BaseDatasetType, List[BaseDatasetType]]):
         for arg in args:
@@ -51,3 +52,6 @@ class Feed:
                     self.data[subarg.__class__].append(subarg)
             else:
                 self.data[arg.__class__].append(arg)
+
+    def add_extra_file(self, filename, content):
+        self.extra_files[filename] = content
