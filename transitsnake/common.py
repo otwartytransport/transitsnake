@@ -53,7 +53,15 @@ class BaseDatasetType(metaclass=abc.ABCMeta):
 
         for field_name, field_definition in self.meta.items():
             value = self.__dict__[field_name]
-            if value is None and field_name in get_optional_fields(self.__class__):
+
+            if value is not None and field_definition.conditional_forbidden and field_definition.conditional_forbidden(self):
+                raise ValueError(f'"{field_name}" is conditionally forbidden')
+
+            is_optional = field_name in get_optional_fields(self.__class__)
+            if field_definition.conditional_required and field_definition.conditional_required(self):
+                is_optional = False
+
+            if value is None and is_optional:
                 continue
 
             field_definition.validate(field_name, self, value)
