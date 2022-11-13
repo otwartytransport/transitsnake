@@ -43,6 +43,6 @@ class StopTime(BaseDatasetType):
 
     meta: ClassVar[Dict[str, Field]] = {
         'shape_dist_traveled': Field(validators=non_negative),
-        'arrival_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT),
-        'departure_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT)
+        'arrival_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT or full.timepoint is None),
+        'departure_time': Field(conditional_required=lambda full: full.timepoint == Timepoint.EXACT or full.timepoint is None)
     }
